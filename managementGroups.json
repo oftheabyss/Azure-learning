@@ -1,0 +1,34 @@
+{
+    "rooted": [
+        {
+            "name": "PREFIX",
+            "parent": "ROOT"
+        },
+        {
+            "name": "workloads",
+            "parent": "ROOT"
+        },
+        {
+            "name": "learning",
+            "parent": "ROOT"
+        }
+    ],
+    "parented": [
+        {
+            "name": "platform",
+            "parent": "PREFIX"
+        },
+        {
+            "name": "sandboxes",
+            "parent": "PREFIX"
+        },
+        {
+            "name": "management",
+            "parent": "platform"
+        },
+        {
+            "name": "connectivity",
+            "parent": "platform"
+        }
+    ]
+}
