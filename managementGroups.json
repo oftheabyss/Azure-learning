@@ -1,4 +1,8 @@
 {
+    "hierarchySettings": {
+        "defaultManagementGroup": "PREFIX-onboarding",
+        "requireAuthorizationForGroupCreation": true
+    },
     "rooted": [
         {
             "name": "PREFIX",
@@ -14,6 +18,14 @@
         }
     ],
     "parented": [
+        {
+            "name": "onboarding",
+            "parent": "PREFIX"
+        },
+        {
+            "name": "decommissioned",
+            "parent": "PREFIX"
+        },
         {
             "name": "platform",
             "parent": "PREFIX"
