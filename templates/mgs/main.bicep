@@ -3,8 +3,8 @@ targetScope = 'tenant'
 /*
 Params
 */
-@description('A unique ID to append to each deployment')
-param buildId string = take(newGuid(), 8)
+// @description('A unique ID to append to each deployment')
+// param buildId string = take(newGuid(), 8)
 
 @description('Enterprise Landing Zone prefix that might change between tenants. Allows for the same structure to remain consistent between multiple tenants.')
 param prefix string = 'armand' // default provided as an example
@@ -27,7 +27,10 @@ var mgsToCreate = union(rootedMgs, parentedMgs)
 Resources
 */
 module createMgs '../../bicep/modules/managementGroup.bicep' = [for mg in mgsToCreate: {
-  name: 'create-${mg.name}-${buildId}'
+  // use a unique ID for deployments - commented out so I don't hit 800 tenant deployment limit in my learning env
+  // NOTE: mg scoped deployments can be cleaned up using a Runbook with a little bit of effort involved. Might add this later
+  // name: 'create-${mg.name}-${buildId}'
+  name: 'create-${mg.name}'
   params: {
     mgName: mg.name == 'PREFIX' ? prefix : mg.parent == 'ROOT' ? mg.name : '${prefix}-${mg.name}'
   }
@@ -37,7 +40,7 @@ module moveMgs '../../bicep/modules/managementGroup.bicep' = [for mg in parented
   dependsOn: [
     createMgs
   ]
-  name: 'move-${mg.name}-${buildId}'
+  name: 'move-${mg.name}'
   params: {
     mgName: mg.name == 'PREFIX' ? mg.name : '${prefix}-${mg.name}'
     parentId: mg.parent == 'PREFIX' ? prefix : '${prefix}-${mg.parent}'
