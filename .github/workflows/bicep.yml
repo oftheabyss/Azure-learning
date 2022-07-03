@@ -16,15 +16,21 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy Bicep files
-    - name: Deploy Management Groups
+    - name: Deploy to Tenant
       run: >-
         az deployment tenant create
         --name github-mg-deploy
         --location eastus
-        -f ${GITHUB_WORKSPACE}/templates/mgs/main.bicep
-    - name: Deploy Hierarchy Settings
-      run: >-
+        -f ${GITHUB_WORKSPACE}/templates/mgs/main.bicep &&
         az deployment tenant create
         --name github-mg-settings-deploy
         --location eastus
         -f ${GITHUB_WORKSPACE}/templates/mg-settings/main.bicep
+    - name: Logout
+      uses: azure/CLI@v1
+      if: always()
+      with:
+        inlineScript: |
+          az logout
+          az cache purge
+          az account clear
